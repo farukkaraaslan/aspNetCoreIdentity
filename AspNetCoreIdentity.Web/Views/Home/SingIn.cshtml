@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewData["Title"] = "SingIn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model SingInViewModel
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+
+
+   <div class="container ">
+       <div class="row">
+           <div class="col-md-6 offset-md-4">
+               <h1>SingIn</h1>
+                <div asp-validation-summary=ModelOnly class="alert alert-danger" role="alert">
+     
+                </div>
+                <form asp-controller="Home" asp-action="SingIn" asp-route-returnurl="@Context.Request.Query["returnURL"]" mehod="post">
+                  <!-- Email input -->
+                     <div class="mb-3">
+                        <label for="Email" class="form-label" asp-for="Email"></label>
+                        <input asp-for="Email" class="form-control">
+                         <span class=" text-danger" asp-validation-for="Email"></span>
+                      </div>
+
+                      <div class="mb-3">
+                        <label for="Password" class="form-label" asp-for="Password"></label>
+                        <input asp-for="Password" class="form-control">
+                         <span class=" text-danger" asp-validation-for="Password"></span>
+                      </div>
+
+                  <!-- 2 column grid layout for inline styling -->
+                  <div class="row mb-4">
+                    <div class="col-md-6 d-flex justify-content-center">
+                      <!-- Checkbox -->
+                      <div class="form-check">
+                        <input class="form-check-input" asp-for="RememberMe" />
+                        <label class="form-check-label" asp-for="RememberMe"> Beni Hatırla </label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <!-- Simple link -->
+                      <a asp-controller="Home" asp-action="ForgotPassword">Şifremi Unuttum</a>
+                    </div>
+                  </div>
+
+                  <!-- Submit button -->
+                  <button type="submit" class="btn btn-primary btn-block mb-4">Giriş Yap</button>
+                   </form>
+                  <!-- Register buttons -->
+                  <div class="text-center">
+                    <p>Üye Değilmisin? <a asp-controller="Home" asp-action="SingUp">Üye Ol</a></p>
+                    <p>veya şunula kaydol:</p>
+                    <button type="button" class="btn btn-link btn-floating mx-1">
+                      <i class="fab fa-facebook-f"></i>
+                    </button>
+
+                    <button type="button" class="btn btn-link btn-floating mx-1">
+                      <i class="fab fa-google"></i>
+                    </button>
+
+                    <button type="button" class="btn btn-link btn-floating mx-1">
+                      <i class="fab fa-twitter"></i>
+                    </button>
+
+                    <button type="submit" class="btn btn-link btn-floating mx-1">
+                      <i class="fab fa-github"></i>
+                    </button>
+                  </div>
+               
+           </div>
+       </div>
+   </div>
