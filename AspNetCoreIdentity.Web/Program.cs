@@ -3,8 +3,11 @@ using AspNetCoreIdentity.Web.Extensions;
 using AspNetCoreIdentity.Web.Models;
 using AspNetCoreIdentity.Web.OptionsModel;
 using AspNetCoreIdentity.Web.Services;
+using AspNetCoreIdentity.Web.UserClaimProvider;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,9 +16,26 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"))
     );
+//her 30 dk bir cookie içerisndeki ve database deki securitysamp deðerini karþýlþtýr
+builder.Services.Configure<SecurityStampValidatorOptions>(options =>
+{
+    options.ValidationInterval = TimeSpan.FromMinutes(30);
+});
+//referans olrak projenin ana klasörünü belirledik
+builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddIdentityExtensions();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IClaimsTransformation,UserClaimProvider>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AnkaraPolicy", policy =>
+    {
+        policy.RequireClaim("city", "ankara");
+    });
+});
+
 builder.Services.ConfigureApplicationCookie(options =>
 {
     var cookieBuilder = new CookieBuilder();
@@ -24,6 +44,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.LoginPath = new PathString("/Home/SingIn");
     //kullanýc çýkýþ yapacaðýnda yönlendirilecek sayfa
     options.LogoutPath = new PathString("/Member/Logout");
+    options.AccessDeniedPath = new PathString("/Member/AccsessDenied");
     options.Cookie=cookieBuilder;
     options.ExpireTimeSpan=TimeSpan.FromMinutes(30);
     //kullanýcý 30 dk boyunca 1 gitþ dahi yapsa cooki süresi 300 dk daha uzar

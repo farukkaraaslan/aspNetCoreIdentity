@@ -1,0 +1,40 @@
+﻿@model RoleCreateViewModel
+
+@{
+    ViewData["Title"] = "RoleCreate";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+  
+<h4>Role Oluştur</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+         @if (TempData["SuccessMesssage"]!=null)
+    {
+        <div class="alert alert-success" role="alert">
+         @TempData["SuccessMesssage"]
+        </div>
+
+    }
+        <form asp-action="RoleCreate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Oluştur" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

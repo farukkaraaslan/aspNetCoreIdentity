@@ -1,11 +1,11 @@
 ﻿using AspNetCoreIdentity.Web.Models;
-using AspNetCoreIdentity.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Diagnostics;
 using AspNetCoreIdentity.Web.Extensions;
 using AspNetCoreIdentity.Web.Services;
+using AspNetCoreIdentity.Web.ViewModels;
 
 namespace AspNetCoreIdentity.Web.Controllers
 {
@@ -124,16 +124,45 @@ namespace AspNetCoreIdentity.Web.Controllers
             return RedirectToAction(nameof(ForgotPassword));
         }
 
+        public IActionResult ResetPassword(string userId,string token)
+        {
+           TempData["userId"] =userId; 
+            TempData["token"] =token;
+            return View();
 
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel request)
+        {
+            var userId = TempData["userId"];
+            var token = TempData["token"];
 
+            if (userId ==null || token==null)
+            {
+                throw new Exception("Bir hata meydana geldi");
 
+            }
+            var hasUser = await _userManager.FindByIdAsync(userId.ToString());
 
+            if (hasUser == null) 
+            {
 
+                ModelState.AddModelError(string.Empty, "Kullanııc BUlunamadı");
+            }
 
-  
+            IdentityResult result=await _userManager.ResetPasswordAsync(hasUser,token.ToString(),request.Password);
 
-
-
+            if (result.Succeeded)
+            {
+                TempData["SuccessMesssage"] = "Şifreniz yenilenmiştir.";
+            }
+            else
+            {
+                ModelState.AddModelErrorList(result.Errors.Select(x=>x.Description).ToList());
+                return View();
+            }
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

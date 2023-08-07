@@ -21,6 +21,7 @@ public class SingInViewModel
     [Display(Name = "Mail:")]
     public string Email { get; set; }
 
+    [DataType(DataType.Password)]
     [Required(ErrorMessage = "Parola Alanı boş bırakılamaz")]
     [Display(Name = "Parola:")]
     public string Password { get; set; }

@@ -1,0 +1,43 @@
+﻿@model List<AssingRoleToUserViewModel>
+@{
+    ViewData["Title"] = "AssingRoleTouser";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+  
+<h4>Role Ata</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+         @if (TempData["SuccessMesssage"]!=null)
+    {
+        <div class="alert alert-success" role="alert">
+         @TempData["SuccessMesssage"]
+        </div>
+
+    }
+        <form asp-action="AssingRoleTouser" asp-route-userId="@ViewBag.userId">
+          @for (int i = 0; i < Model.Count; i++)
+            {
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" asp-for="@Model[i].Exist">
+                  <label class="form-check-label" for="flexCheckChecked"> @Model[i].Name</label>
+                     <input  type="hidden" asp-for="@Model[i].Id">
+                     <input  type="hidden" asp-for="@Model[i].Name">
+                </div>
+            }
+              <div class="form-group mt-3">
+                <input type="submit" value="Oluştur" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Home" asp-action="UserList">Kullanıc Listesine geri dön</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

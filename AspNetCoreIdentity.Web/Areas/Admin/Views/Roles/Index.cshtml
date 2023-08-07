@@ -1,0 +1,38 @@
+﻿@model List<RoleViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<a asp-controller="Roles" asp-action="RoleCreate" asp-area="admin"> role ekle</a>
+<h1>Roller</h1>
+@if (TempData["SuccessMesssage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMesssage"]
+        </div>
+        }
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col"></th>
+    
+    </tr>
+  </thead>
+  <tbody>
+
+      @foreach (var item in Model)
+        {
+           <tr>
+
+              <td>@item.Id</td>
+              <td>@item.Name</td>
+              <td><a asp-area="admin" asp-controller="Roles" asp-action="RoleUpdate" asp-route-id="@item.Id">Rol Güncelle</a></td>
+              <td><a asp-area="admin" asp-controller="Roles" asp-action="RoleDelete" asp-route-id="@item.Id">Rol Sil</a></td>
+
+            </tr>        
+        }
+ 
+  </tbody>
+</table>

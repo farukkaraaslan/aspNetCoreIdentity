@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "UserEdit";
+}
+@model UserEditViewModel
+
+@section Scripts{
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
+<div class="col-md-6 offset-md-3">
+    <h2>Kullanıcı GÜncelleme</h2>
+
+    @if (TempData["SuccessMesssage"]!=null)
+    {
+        <div class="alert alert-success" role="alert">
+         @TempData["SuccessMesssage"]
+        </div>
+
+    }
+       <div asp-validation-summary=ModelOnly class="alert alert-danger" role="alert">
+     
+        </div>
+    <div class="row mb-3">
+        <form  asp-action="UserEdit" method="post" enctype="multipart/form-data" >
+
+               <div class="mb-3">
+                <label for="Phone" class="form-label" asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control">
+                 <span class=" text-danger" asp-validation-for="UserName"></span>
+              </div>
+
+               <div class="mb-3">
+                <label for="Password" class="form-label" asp-for="Email"></label>
+                <input asp-for="Email" class="form-control">
+                 <span class=" text-danger" asp-validation-for="Email"></span>
+              </div>
+
+               <div class="mb-3">
+                <label for="PasswordConfirm" class="form-label" asp-for="Phone"></label>
+                <input asp-for="Phone" class="form-control">
+                 <span class=" text-danger" asp-validation-for="Phone"></span>
+              </div>
+
+                <div class="mb-3">
+                <label for="PasswordConfirm" class="form-label" asp-for="BirtDate"></label>
+                <input asp-for="BirtDate" class="form-control">
+                 <span class=" text-danger" asp-validation-for="BirtDate"></span>
+              </div>
+
+                <div class="mb-3">
+                <label for="PasswordConfirm" class="form-label" asp-for="City"></label>
+                <input asp-for="City" class="form-control">
+                 <span class=" text-danger" asp-validation-for="City"></span>
+              </div>
+
+                  <div class="mb-3">
+                <label for="PasswordConfirm" class="form-label" asp-for="Gender"></label>
+              <select class="form-control" asp-for="Gender" asp-items="ViewBag.genderList">
+                  <option value="">Cinsiyet Seçiniz</option>
+              </select>
+                 <span class=" text-danger" asp-validation-for="Gender"></span>
+              </div>
+
+               <div class="mb-3">
+                <label for="PasswordConfirm" class="form-label" asp-for="Picture"></label>
+                <input type="file" asp-for="Picture" class="form-control">
+                 <span class=" text-danger" asp-validation-for="Picture"></span>
+              </div>
+              <button type="submit" class="btn btn-primary">Güncelle</button>
+        </form>
+
+    </div>
+  
+</div>
